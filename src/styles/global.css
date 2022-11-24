@@ -1,0 +1,11 @@
+@font-face {
+  font-family: "Literata";
+  font-weight: 100 900;
+  font-display: fallback;
+  font-style: normal;
+  src: url(/Literata-VariableFont.ttf) format("ttf");
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
