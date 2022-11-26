@@ -2,10 +2,12 @@ lockfileVersion: 5.4
 
 specifiers:
   '@lexical/react': ^0.6.3
+  '@lexical/utils': ^0.6.3
   '@types/react': ^18.0.24
   '@types/react-dom': ^18.0.8
   '@vitejs/plugin-react': ^2.2.0
   autoprefixer: ^10.4.13
+  classnames: ^2.3.2
   lexical: ^0.6.3
   postcss: ^8.4.19
   react: ^18.2.0
@@ -16,6 +18,8 @@ specifiers:
 
 dependencies:
   '@lexical/react': 0.6.3_zpbcprhm6lhtgqxmsrccapmusq
+  '@lexical/utils': 0.6.3_lexical@0.6.3
+  classnames: 2.3.2
   lexical: 0.6.3
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -754,6 +758,10 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
+
+  /classnames/2.3.2:
+    resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
+    dev: false
 
   /color-convert/1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
