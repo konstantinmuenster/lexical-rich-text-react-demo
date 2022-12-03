@@ -4,10 +4,10 @@ import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
-import { ClearEditorPlugin } from "@lexical/react/LexicalClearEditorPlugin";
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 
 import { ActionsPlugin } from "./plugins/Actions";
+import { FloatingMenuPlugin } from "./plugins/FloatingMenu";
 import { HistoryStateContext, useHistoryState } from "./context/HistoryState";
 
 type EditorProps = {
@@ -23,6 +23,13 @@ export function Editor(props: EditorProps) {
             namespace: "lexical-editor",
             theme: {
               root: "p-4 border-slate-500 border-2 rounded h-auto min-h-[200px] focus:outline-none focus-visible:border-black",
+              text: {
+                bold: "font-semibold",
+                underline: "underline decoration-wavy",
+                italic: "italic",
+                strikethrough: "line-through",
+                underlineStrikethrough: "underlined-line-through",
+              },
             },
             onError: (error) => {
               console.log(error);
@@ -43,14 +50,16 @@ export function LexicalEditor(props: LexicalEditorProps) {
 
   return (
     <LexicalComposer initialConfig={props.config}>
+      {/* Official Plugins */}
+      <HistoryPlugin externalHistoryState={historyState} />
       <RichTextPlugin
         contentEditable={<ContentEditable />}
         placeholder={<Placeholder />}
         ErrorBoundary={LexicalErrorBoundary}
       />
-      <HistoryPlugin externalHistoryState={historyState} />
-      <ClearEditorPlugin />
+      {/* Custom Plugins */}
       <ActionsPlugin />
+      <FloatingMenuPlugin />
     </LexicalComposer>
   );
 }

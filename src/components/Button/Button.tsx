@@ -1,7 +1,7 @@
 import { ComponentProps } from "react";
 
 type ButtonProps = {
-  children?: string;
+  children?: JSX.Element;
 } & ComponentProps<"button">;
 
 export function Button({ children, ...props }: ButtonProps) {
