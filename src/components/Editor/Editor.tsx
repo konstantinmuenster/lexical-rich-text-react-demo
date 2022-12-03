@@ -8,19 +8,25 @@ import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 
 import { ActionsPlugin } from "./plugins/Actions";
 import { FloatingMenuPlugin } from "./plugins/FloatingMenu";
+import { LocalStoragePlugin } from "./plugins/LocalStorage";
 import { HistoryStateContext, useHistoryState } from "./context/HistoryState";
+
+export const EDITOR_NAMESPACE = "lexical-editor";
 
 type EditorProps = {
   className?: string;
 };
 
 export function Editor(props: EditorProps) {
+  const content = localStorage.getItem(EDITOR_NAMESPACE);
+
   return (
     <div id="editor-wrapper" className={cx(props.className, "relative")}>
       <HistoryStateContext>
         <LexicalEditor
           config={{
-            namespace: "lexical-editor",
+            namespace: EDITOR_NAMESPACE,
+            editorState: content,
             theme: {
               root: "p-4 border-slate-500 border-2 rounded h-auto min-h-[200px] focus:outline-none focus-visible:border-black",
               text: {
@@ -60,6 +66,7 @@ export function LexicalEditor(props: LexicalEditorProps) {
       {/* Custom Plugins */}
       <ActionsPlugin />
       <FloatingMenuPlugin />
+      <LocalStoragePlugin />
     </LexicalComposer>
   );
 }
