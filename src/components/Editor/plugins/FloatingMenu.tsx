@@ -13,28 +13,27 @@ type FloatingMenuPosition = { x: number; y: number } | undefined;
 
 type FloatingMenuProps = {
   editor: LexicalEditor;
-  shouldShow: boolean;
+  show: boolean;
   isBold: boolean;
   isItalic: boolean;
   isStrikethrough: boolean;
   isUnderline: boolean;
 };
 
-function FloatingMenu({ shouldShow, ...props }: FloatingMenuProps) {
+function FloatingMenu({ show, ...props }: FloatingMenuProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState<FloatingMenuPosition>(undefined);
 
-  useEffect(() => {
-    const nativeSelection = window.getSelection();
-    const isActiveNativeSelection =
-      nativeSelection && nativeSelection?.rangeCount !== 0;
+  const nativeSel = window.getSelection();
 
-    if (!shouldShow || !ref.current || !isActiveNativeSelection) {
+  useEffect(() => {
+    const isCollapsed = nativeSel?.rangeCount === 0 || nativeSel?.isCollapsed;
+
+    if (!show || !ref.current || !nativeSel || isCollapsed) {
       setPos(undefined);
       return;
     }
-
-    const domRange = nativeSelection.getRangeAt(0);
+    const domRange = nativeSel.getRangeAt(0);
 
     computePosition(domRange, ref.current, { placement: "top" })
       .then((pos) => {
@@ -43,7 +42,9 @@ function FloatingMenu({ shouldShow, ...props }: FloatingMenuProps) {
       .catch(() => {
         setPos(undefined);
       });
-  }, [shouldShow]);
+    // anchorOffset, so that we sync the menu position with
+    // native selection (if user selects two ranges consecutively)
+  }, [show, nativeSel, nativeSel?.anchorOffset]);
 
   return (
     <div
@@ -92,7 +93,7 @@ function FloatingMenu({ shouldShow, ...props }: FloatingMenuProps) {
 const ANCHOR_ELEMENT = document.body;
 
 export function FloatingMenuPlugin() {
-  const [shouldShow, setShouldShow] = useState(false);
+  const [show, setShow] = useState(false);
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderline, setIsUnderline] = useState(false);
@@ -106,7 +107,7 @@ export function FloatingMenuPlugin() {
       if (editor.isComposing() || isPointerDown || isKeyDown) return;
 
       if (editor.getRootElement() !== document.activeElement) {
-        setShouldShow(false);
+        setShow(false);
         return;
       }
 
@@ -117,9 +118,9 @@ export function FloatingMenuPlugin() {
         setIsItalic(selection.hasFormat("italic"));
         setIsUnderline(selection.hasFormat("underline"));
         setIsStrikethrough(selection.hasFormat("strikethrough"));
-        setShouldShow(true);
+        setShow(true);
       } else {
-        setShouldShow(false);
+        setShow(false);
       }
     });
   }, [editor, isPointerDown, isKeyDown]);
@@ -141,7 +142,7 @@ export function FloatingMenuPlugin() {
   return createPortal(
     <FloatingMenu
       editor={editor}
-      shouldShow={shouldShow}
+      show={show}
       isBold={isBold}
       isItalic={isItalic}
       isStrikethrough={isStrikethrough}
