@@ -1,11 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { ClearEditorPlugin } from "@lexical/react/LexicalClearEditorPlugin";
 import {
   $getRoot,
   $isParagraphNode,
   CLEAR_EDITOR_COMMAND,
-  EditorState,
   REDO_COMMAND,
   UNDO_COMMAND,
 } from "lexical";
@@ -19,33 +18,46 @@ export function ActionsPlugin() {
 
   const [isEditorEmpty, setIsEditorEmpty] = useState(true);
 
+  const { undoStack, redoStack } = historyState ?? {};
+  const [hasUndo, setHasUndo] = useState(undoStack?.length !== 0);
+  const [hasRedo, setHasRedo] = useState(redoStack?.length !== 0);
+
   const MandatoryPlugins = useMemo(() => {
     return <ClearEditorPlugin />;
   }, []);
 
-  const checkEditorEmptyState = useCallback((state: EditorState) => {
-    state.read(() => {
-      const root = $getRoot();
-      const children = root.getChildren();
+  useEffect(
+    function checkEditorEmptyState() {
+      return editor.registerUpdateListener(({ editorState }) => {
+        editorState.read(() => {
+          const root = $getRoot();
+          const children = root.getChildren();
 
-      if (children.length > 1) {
-        setIsEditorEmpty(false);
-        return;
-      }
+          if (children.length > 1) {
+            setIsEditorEmpty(false);
+            return;
+          }
 
-      if ($isParagraphNode(children[0])) {
-        setIsEditorEmpty(children[0].getChildren().length === 0);
-      } else {
-        setIsEditorEmpty(false);
-      }
-    });
-  }, []);
+          if ($isParagraphNode(children[0])) {
+            setIsEditorEmpty(children[0].getChildren().length === 0);
+          } else {
+            setIsEditorEmpty(false);
+          }
+        });
+      });
+    },
+    [editor]
+  );
 
-  useEffect(() => {
-    return editor.registerUpdateListener(({ editorState }) => {
-      checkEditorEmptyState(editorState);
-    });
-  }, [editor, checkEditorEmptyState]);
+  useEffect(
+    function checkEditorHistoryActions() {
+      return editor.registerUpdateListener(() => {
+        setHasRedo(redoStack?.length !== 0);
+        setHasUndo(undoStack?.length !== 0);
+      });
+    },
+    [editor, undoStack, redoStack]
+  );
 
   return (
     <>
@@ -61,7 +73,7 @@ export function ActionsPlugin() {
         </Button>
         <div className="flex gap-1">
           <Button
-            disabled={historyState?.undoStack.length === 0}
+            disabled={!hasUndo}
             onClick={() => {
               editor.dispatchCommand(UNDO_COMMAND, undefined);
             }}
@@ -69,7 +81,7 @@ export function ActionsPlugin() {
             {ActionIcons.Undo}
           </Button>
           <Button
-            disabled={historyState?.redoStack.length === 0}
+            disabled={!hasRedo}
             onClick={() => {
               editor.dispatchCommand(REDO_COMMAND, undefined);
             }}
