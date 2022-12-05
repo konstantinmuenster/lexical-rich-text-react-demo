@@ -10,11 +10,11 @@ import {
 } from "lexical";
 
 import { Button } from "../../Button";
-import { useHistoryState } from "../context/HistoryState";
+import { useEditorHistoryState } from "../context/EditorHistoryState";
 
 export function ActionsPlugin() {
   const [editor] = useLexicalComposerContext();
-  const { historyState } = useHistoryState();
+  const { historyState } = useEditorHistoryState();
 
   const [isEditorEmpty, setIsEditorEmpty] = useState(true);
 

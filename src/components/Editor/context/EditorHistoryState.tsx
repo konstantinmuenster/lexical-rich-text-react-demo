@@ -5,17 +5,21 @@ import {
   HistoryState,
 } from "@lexical/react/LexicalHistoryPlugin";
 
-type HistoryStateContext = {
+type EditorHistoryStateContext = {
   historyState?: HistoryState;
 };
 
-const Context = createContext<HistoryStateContext>({});
+const Context = createContext<EditorHistoryStateContext>({});
 
-export const HistoryStateContext = ({ children }: { children: ReactNode }) => {
+export function EditorHistoryStateContext({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const h = useMemo(() => ({ historyState: createEmptyHistoryState() }), []);
   return <Context.Provider value={h}>{children}</Context.Provider>;
-};
+}
 
-export const useHistoryState = (): HistoryStateContext => {
+export function useEditorHistoryState(): EditorHistoryStateContext {
   return useContext(Context);
-};
+}

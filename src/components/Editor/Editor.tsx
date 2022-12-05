@@ -17,7 +17,10 @@ import { ActionsPlugin } from "./plugins/Actions";
 import { FloatingMenuPlugin } from "./plugins/FloatingMenu";
 import { LocalStoragePlugin } from "./plugins/LocalStorage";
 import { AutoLinkPlugin } from "./plugins/AutoLink";
-import { HistoryStateContext, useHistoryState } from "./context/HistoryState";
+import {
+  EditorHistoryStateContext,
+  useEditorHistoryState,
+} from "./context/EditorHistoryState";
 
 export const EDITOR_NAMESPACE = "lexical-editor";
 
@@ -46,7 +49,7 @@ export function Editor(props: EditorProps) {
         "relative prose prose-slate prose-p:my-0 prose-headings:mb-4 prose-headings:mt-2"
       )}
     >
-      <HistoryStateContext>
+      <EditorHistoryStateContext>
         <LexicalEditor
           config={{
             namespace: EDITOR_NAMESPACE,
@@ -67,7 +70,7 @@ export function Editor(props: EditorProps) {
             },
           }}
         />
-      </HistoryStateContext>
+      </EditorHistoryStateContext>
     </div>
   );
 }
@@ -77,7 +80,7 @@ type LexicalEditorProps = {
 };
 
 export function LexicalEditor(props: LexicalEditorProps) {
-  const { historyState } = useHistoryState();
+  const { historyState } = useEditorHistoryState();
 
   return (
     <LexicalComposer initialConfig={props.config}>
