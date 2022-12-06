@@ -2,7 +2,7 @@ import { ComponentProps } from "react";
 
 import cx from "classnames";
 
-type IconType = "bold" | "italic" | "underline" | "strike";
+type IconType = "bold" | "code" | "italic" | "underline" | "strike";
 
 type IconButtonProps = {
   active?: boolean;
@@ -44,6 +44,19 @@ const IconLibrary: Record<IconType, JSX.Element> = {
     >
       <title>Bold</title>
       <path d="M62.73 49.109c5.347-1.103 9.76-5.94 9.76-12.985 0-7.553-5.517-14.428-16.295-14.428H29.011a2.604 2.604 0 0 0-2.604 2.604v51.399a2.604 2.604 0 0 0 2.604 2.604h28.118c10.863 0 16.464-6.79 16.464-15.361.001-7.043-4.752-12.9-10.863-13.833zM38.458 32.305h15.107c4.074 0 6.62 2.461 6.62 5.94 0 3.649-2.546 5.941-6.62 5.941H38.458V32.305zm15.615 35.39H38.458v-12.9h15.616c4.668 0 7.214 2.886 7.214 6.45 0 4.074-2.716 6.45-7.215 6.45z"></path>
+    </svg>
+  ),
+  code: (
+    <svg
+      viewBox="0 0 16 16"
+      focusable="false"
+      role="img"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-5 h-5"
+    >
+      <title>Inline Code</title>
+      <path d="M5.854 4.854a.5.5 0 1 0-.708-.708l-3.5 3.5a.5.5 0 0 0 0 .708l3.5 3.5a.5.5 0 0 0 .708-.708L2.707 8l3.147-3.146zm4.292 0a.5.5 0 0 1 .708-.708l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8l-3.147-3.146z"></path>
     </svg>
   ),
   italic: (

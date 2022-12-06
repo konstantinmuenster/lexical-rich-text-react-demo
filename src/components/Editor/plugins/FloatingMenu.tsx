@@ -15,6 +15,7 @@ type FloatingMenuProps = {
   editor: LexicalEditor;
   show: boolean;
   isBold: boolean;
+  isCode: boolean;
   isItalic: boolean;
   isStrikethrough: boolean;
   isUnderline: boolean;
@@ -87,6 +88,14 @@ function FloatingMenu({ show, ...props }: FloatingMenuProps) {
           props.editor.dispatchCommand(FORMAT_TEXT_COMMAND, "strikethrough");
         }}
       />
+      <IconButton
+        icon="code"
+        aria-label="Format text with inline code"
+        active={props.isCode}
+        onClick={() => {
+          props.editor.dispatchCommand(FORMAT_TEXT_COMMAND, "code");
+        }}
+      />
     </div>
   );
 }
@@ -96,6 +105,7 @@ const ANCHOR_ELEMENT = document.body;
 export function FloatingMenuPlugin() {
   const [show, setShow] = useState(false);
   const [isBold, setIsBold] = useState(false);
+  const [isCode, setIsCode] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderline, setIsUnderline] = useState(false);
   const [isStrikethrough, setIsStrikethrough] = useState(false);
@@ -116,6 +126,7 @@ export function FloatingMenuPlugin() {
 
       if ($isRangeSelected(selection)) {
         setIsBold(selection.hasFormat("bold"));
+        setIsCode(selection.hasFormat("code"));
         setIsItalic(selection.hasFormat("italic"));
         setIsUnderline(selection.hasFormat("underline"));
         setIsStrikethrough(selection.hasFormat("strikethrough"));
@@ -145,6 +156,7 @@ export function FloatingMenuPlugin() {
       editor={editor}
       show={show}
       isBold={isBold}
+      isCode={isCode}
       isItalic={isItalic}
       isStrikethrough={isStrikethrough}
       isUnderline={isUnderline}
