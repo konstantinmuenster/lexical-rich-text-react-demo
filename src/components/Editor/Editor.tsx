@@ -8,15 +8,18 @@ import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
+import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPlugin";
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 
+import { isValidUrl } from "./utils/url";
 import { ActionsPlugin } from "./plugins/Actions";
+import { AutoLinkPlugin } from "./plugins/AutoLink";
+import { EditLinkPlugin } from "./plugins/EditLink";
 import { FloatingMenuPlugin } from "./plugins/FloatingMenu";
 import { LocalStoragePlugin } from "./plugins/LocalStorage";
-import { AutoLinkPlugin } from "./plugins/AutoLink";
 import {
   EditorHistoryStateContext,
   useEditorHistoryState,
@@ -86,16 +89,18 @@ export function LexicalEditor(props: LexicalEditorProps) {
     <LexicalComposer initialConfig={props.config}>
       {/* Official Plugins */}
       <RichTextPlugin
-        contentEditable={<ContentEditable />}
+        contentEditable={<ContentEditable spellCheck={false} />}
         placeholder={<Placeholder />}
         ErrorBoundary={LexicalErrorBoundary}
       />
       <HistoryPlugin externalHistoryState={historyState} />
       <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
       <ListPlugin />
+      <LinkPlugin validateUrl={isValidUrl} />
       {/* Custom Plugins */}
       <ActionsPlugin />
       <AutoLinkPlugin />
+      <EditLinkPlugin />
       <FloatingMenuPlugin />
       <LocalStoragePlugin />
     </LexicalComposer>
