@@ -6,7 +6,9 @@ import type { EditorState } from "lexical";
  * If so, return the link target, otherwise return undefined.
  */
 
-export function $getSharedLinkTarget(selection?: EditorState["_selection"]) {
+export function $getSharedLinkTarget(
+  selection?: EditorState["_selection"]
+): string | undefined {
   const nodes = selection?.getNodes();
   if (!nodes?.length) return undefined;
 

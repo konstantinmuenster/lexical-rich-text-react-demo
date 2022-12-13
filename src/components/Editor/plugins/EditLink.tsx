@@ -28,6 +28,7 @@ export function EditLinkPlugin() {
   const [error, setError] = useState(false);
   const [pos, setPos] = useState<EditLinkMenuPosition>(undefined);
   const [domRange, setDomRange] = useState<Range | undefined>(undefined);
+  const [hasLink, setHasLink] = useState(false);
 
   const [editor] = useLexicalComposerContext();
 
@@ -70,6 +71,16 @@ export function EditLinkPlugin() {
   }, [editor, pos, resetState]);
 
   useEffect(() => {
+    return editor.registerUpdateListener(({ editorState }) => {
+      editorState.read(() => {
+        const selection = $getSelection();
+        const linkTarget = $getSharedLinkTarget(selection);
+        setHasLink(!!linkTarget);
+      });
+    });
+  }, [editor]);
+
+  useEffect(() => {
     if (pos?.x && pos?.y) {
       let initialUrl = "";
 
@@ -97,6 +108,11 @@ export function EditLinkPlugin() {
 
     if (isLinkSet) resetState();
     else setError(true);
+  };
+
+  const handleRemoveLink = () => {
+    editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
+    resetState();
   };
 
   return (
@@ -132,6 +148,9 @@ export function EditLinkPlugin() {
             }
           }}
         />
+        {hasLink ? (
+          <IconButton icon="trash" onClick={handleRemoveLink} />
+        ) : null}
         <IconButton icon="check" disabled={!value} onClick={handleSetLink} />
       </div>
     </>
