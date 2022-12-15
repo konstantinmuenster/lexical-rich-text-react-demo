@@ -54,7 +54,7 @@ export function OpenLinkPlugin() {
       return true;
     };
 
-    const debouncedMouseMove = debounce(handleMouseMove, 100);
+    const debouncedMouseMove = debounce(handleMouseMove, 200);
 
     return editor.registerMutationListener(LinkNode, (mutations) => {
       for (const [key, type] of mutations) {
