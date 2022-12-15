@@ -5,6 +5,7 @@ import cx from "classnames";
 type IconType =
   | "bold"
   | "code"
+  | "copy"
   | "italic"
   | "link"
   | "underline"
@@ -86,6 +87,19 @@ const IconLibrary: Record<IconType, JSX.Element> = {
     >
       <title>Inline Code</title>
       <path d="M5.854 4.854a.5.5 0 1 0-.708-.708l-3.5 3.5a.5.5 0 0 0 0 .708l3.5 3.5a.5.5 0 0 0 .708-.708L2.707 8l3.147-3.146zm4.292 0a.5.5 0 0 1 .708-.708l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8l-3.147-3.146z"></path>
+    </svg>
+  ),
+  copy: (
+    <svg
+      viewBox="0 0 24 24"
+      focusable="false"
+      role="img"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-4 h-4"
+    >
+      <title>Copy</title>
+      <path d="M20 2H10c-1.103 0-2 .897-2 2v4H4c-1.103 0-2 .897-2 2v10c0 1.103.897 2 2 2h10c1.103 0 2-.897 2-2v-4h4c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2zM4 20V10h10l.002 10H4zm16-6h-4v-4c0-1.103-.897-2-2-2h-4V4h10v10z"></path>
     </svg>
   ),
   italic: (

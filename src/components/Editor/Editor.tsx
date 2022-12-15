@@ -20,6 +20,7 @@ import { AutoLinkPlugin } from "./plugins/AutoLink";
 import { EditLinkPlugin } from "./plugins/EditLink";
 import { FloatingMenuPlugin } from "./plugins/FloatingMenu";
 import { LocalStoragePlugin } from "./plugins/LocalStorage";
+import { OpenLinkPlugin } from "./plugins/OpenLink";
 import {
   EditorHistoryStateContext,
   useEditorHistoryState,
@@ -60,6 +61,7 @@ export function Editor(props: EditorProps) {
             editorState: content,
             theme: {
               root: "p-4 border-slate-500 border-2 rounded h-auto min-h-[200px] focus:outline-none focus-visible:border-black",
+              link: "cursor-pointer",
               text: {
                 bold: "font-semibold",
                 underline: "underline decoration-wavy",
@@ -103,6 +105,7 @@ export function LexicalEditor(props: LexicalEditorProps) {
       <EditLinkPlugin />
       <FloatingMenuPlugin />
       <LocalStoragePlugin />
+      <OpenLinkPlugin />
     </LexicalComposer>
   );
 }

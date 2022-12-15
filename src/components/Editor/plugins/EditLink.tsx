@@ -59,6 +59,11 @@ export function EditLinkPlugin() {
           .then((pos) => {
             setPos({ x: pos.x, y: pos.y + 10 });
             setDomRange(domRange);
+            editor.getEditorState().read(() => {
+              const selection = $getSelection();
+              const linkTarget = $getSharedLinkTarget(selection);
+              setHasLink(!!linkTarget);
+            });
           })
           .catch(() => {
             resetState();
@@ -69,16 +74,6 @@ export function EditLinkPlugin() {
       COMMAND_PRIORITY_LOW
     );
   }, [editor, pos, resetState]);
-
-  useEffect(() => {
-    return editor.registerUpdateListener(({ editorState }) => {
-      editorState.read(() => {
-        const selection = $getSelection();
-        const linkTarget = $getSharedLinkTarget(selection);
-        setHasLink(!!linkTarget);
-      });
-    });
-  }, [editor]);
 
   useEffect(() => {
     if (pos?.x && pos?.y) {
