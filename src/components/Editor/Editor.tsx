@@ -104,7 +104,7 @@ export function LexicalEditor(props: LexicalEditorProps) {
       <AutoLinkPlugin />
       <EditLinkPlugin />
       <FloatingMenuPlugin />
-      <LocalStoragePlugin />
+      <LocalStoragePlugin namespace={EDITOR_NAMESPACE} />
       <OpenLinkPlugin />
     </LexicalComposer>
   );

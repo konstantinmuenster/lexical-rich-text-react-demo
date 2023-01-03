@@ -1,13 +1,23 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 
-import { useDebounce } from "../hooks/useDebounce";
+import { debounce } from "../utils/debounce";
 
-export function LocalStoragePlugin() {
+type LocalStoragePluginProps = {
+  namespace: string;
+};
+
+export function LocalStoragePlugin({ namespace }: LocalStoragePluginProps) {
   const [editor] = useLexicalComposerContext();
 
-  const content = localStorage.getItem(editor._config.namespace);
-  const debouncedContent = useDebounce(content, 500);
+  const saveContent = useCallback(
+    (content: string) => {
+      localStorage.setItem(namespace, content);
+    },
+    [namespace]
+  );
+
+  const debouncedSaveContent = debounce(saveContent, 500);
 
   useEffect(() => {
     return editor.registerUpdateListener(
@@ -16,10 +26,10 @@ export function LocalStoragePlugin() {
         if (dirtyElements.size === 0 && dirtyLeaves.size === 0) return;
 
         const serializedState = JSON.stringify(editorState);
-        localStorage.setItem(editor._config.namespace, serializedState);
+        debouncedSaveContent(serializedState);
       }
     );
-  }, [debouncedContent, editor]);
+  }, [debouncedSaveContent, editor]);
 
   return null;
 }
