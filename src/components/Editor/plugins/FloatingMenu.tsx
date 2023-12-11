@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { $isLinkNode } from "@lexical/link";
 import { $getSelection, FORMAT_TEXT_COMMAND, LexicalEditor } from "lexical";
-import { computePosition } from "@floating-ui/dom";
+import { computePosition, autoPlacement } from "@floating-ui/dom";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 
 import { IconButton } from "../../IconButton";
@@ -39,7 +39,7 @@ function FloatingMenu({ show, ...props }: FloatingMenuProps) {
     }
     const domRange = nativeSel.getRangeAt(0);
 
-    computePosition(domRange, ref.current, { placement: "top" })
+    computePosition(domRange, ref.current, { placement: "top" , middleware: [autoPlacement()]})
       .then((pos) => {
         setPos({ x: pos.x, y: pos.y - 10 });
       })
